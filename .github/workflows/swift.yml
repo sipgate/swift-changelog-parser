@@ -22,8 +22,9 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: ${{ github.sha }}
-          release_name: Release ${{ github.sha }}
+          # Tag should look like this [TODAY] ([BUILD_NUMBER])
+          tag_name: ${{ github.event.head_commit.timestamp }} (${{ steps.build_number.outputs.build_number }})
+          release_name: ${{ github.event.head_commit.timestamp }} (${{ steps.build_number.outputs.build_number }})
           body: ""
           draft: false
           prerelease: false
