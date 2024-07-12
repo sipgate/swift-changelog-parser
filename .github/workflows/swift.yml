@@ -37,4 +37,4 @@ jobs:
         with:
           files: .build/release/swift-changelog-parser
           make_latest: "true"
-          tagName: ${{ env.tag_name }}
+          tag_name: ${{ env.tag_name }}
