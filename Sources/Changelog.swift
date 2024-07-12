@@ -4,6 +4,11 @@ import ArgumentParser
 
 @main
 struct Changelog: ParsableCommand {
+    static let  configuration = CommandConfiguration(
+        abstract: "Get items from a Changelog.md file for a specific release or that are unreleased.",
+        version: "1.0.0"
+    )
+    
     enum Release: ExpressibleByArgument, CustomStringConvertible {
         case unreleased
         case release(String)
@@ -30,7 +35,7 @@ struct Changelog: ParsableCommand {
             }
         }
     }
-
+    
     @Argument(help: "Path to Changelog.md file")
     var path: String
 
