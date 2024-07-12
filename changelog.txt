@@ -1,0 +1,6 @@
+- 🔥 No longer show AI features carousel after login
+- 🐛 Start call from native recent calls
+- 🐛 Crash on hangup
+- 🔥 Remove support for deprecated deeplinks
+- ✨ Showing new permission screen after login and if microphone permission is not granted.
+- ✨ Settings & account redesign
