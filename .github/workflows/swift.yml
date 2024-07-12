@@ -15,7 +15,9 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Build
-        run: swift build -v -c release
+        run: swift build -v -c release --arch arm64 --arch x86_64
+      - name: Make executable
+        run: chmod +x .build/release/swift-changelog-parser
       - name: Get current date
         id: date
         run: echo "date=$(date +'%Y.%m.%d')" >> $GITHUB_ENV
