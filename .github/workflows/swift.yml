@@ -15,7 +15,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Build
-        run: swift build -v -c release --arch arm64 --arch x86_64
+        run: swift build -v --disable-sandbox -c release --arch arm64 --arch x86_64
       - name: Make executable
         run: chmod +x .build/apple/Products/Release/swift-changelog-parser
       - name: Get current date
