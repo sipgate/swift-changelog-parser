@@ -1,14 +1,21 @@
+import ArgumentParser
 import Foundation
 import Markdown
-import ArgumentParser
+import OSLog
+
+extension Logger {
+    static let changelog = Logger(subsystem: "swift-changelog-parser", category: "changelog")
+
+}
 
 @main
 struct Changelog: ParsableCommand {
+
     static let  configuration = CommandConfiguration(
         abstract: "Get items from a Changelog.md file for a specific release or that are unreleased.",
         version: "1.0.0"
     )
-    
+
     enum Release: ExpressibleByArgument, CustomStringConvertible {
         case unreleased
         case release(String)
@@ -35,7 +42,7 @@ struct Changelog: ParsableCommand {
             }
         }
     }
-    
+
     @Argument(help: "Path to Changelog.md file")
     var path: String
 
@@ -61,7 +68,9 @@ struct Changelog: ParsableCommand {
 
         let list = document.child(at: heading.indexInParent + 1)
         guard let list, list is UnorderedList else {
-            throw ValidationError("Changelog does not contain elements in the '\(release.description.localizedCapitalized)' section")
+            Logger.changelog.info("Changelog does not contain elements in the '\(release.description.localizedCapitalized, privacy: .public)' section")
+            print("")
+            return
         }
 
         print(list.format().trimmingCharacters(in: .whitespacesAndNewlines))
