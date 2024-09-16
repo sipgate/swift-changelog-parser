@@ -18,12 +18,15 @@ struct Changelog: ParsableCommand {
 
     enum Release: ExpressibleByArgument, CustomStringConvertible {
         case unreleased
+        case latest
         case release(String)
 
         var description: String {
             switch self {
             case .unreleased:
                 return defaultValueDescription
+            case .latest:
+                return "latest"
             case let .release(value):
                 return value
             }
@@ -37,8 +40,19 @@ struct Changelog: ParsableCommand {
             switch argument.lowercased() {
             case "unreleased":
                 self = .unreleased
+            case "latest":
+                self = .latest
             default:
                 self = .release(argument)
+            }
+        }
+        
+        func filterForFirstMatching(_ heading: Heading) -> Bool {
+            switch self {
+            case .latest:
+                heading.plainText.lowercased() != Release.unreleased.description
+            case .unreleased, .release:
+                heading.plainText.lowercased() == description
             }
         }
     }
@@ -60,7 +74,7 @@ struct Changelog: ParsableCommand {
         let heading = document.children
             .compactMap { $0 as? Heading }
             .filter { $0.level == 2 }
-            .first { $0.plainText.lowercased() == release.description }
+            .first { release.filterForFirstMatching($0) }
 
         guard let heading else {
             throw ValidationError("Changelog does not contain '\(release.description.localizedCapitalized)' section")
